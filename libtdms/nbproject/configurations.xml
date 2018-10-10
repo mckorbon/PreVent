@@ -52,7 +52,7 @@
           <incDir>
             <pElem>include</pElem>
           </incDir>
-          <commandLine>-g -O0</commandLine>
+          <commandLine>-g -O0 -D_XOPEN_SOURCE=700</commandLine>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.${CND_DLIB_EXT}</output>
@@ -74,19 +74,25 @@
                             perm="644"
                             owner="root"
                             group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
         </packFileList>
       </packaging>
-      <item path="TdmsChannel.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsChannel.cpp" ex="false" tool="1" flavor2="11">
       </item>
-      <item path="TdmsGroup.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsGroup.cpp" ex="false" tool="1" flavor2="11">
       </item>
-      <item path="TdmsLeadIn.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsLeadIn.cpp" ex="false" tool="1" flavor2="11">
       </item>
-      <item path="TdmsMetaData.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsMetaData.cpp" ex="false" tool="1" flavor2="11">
       </item>
-      <item path="TdmsObject.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsObject.cpp" ex="false" tool="1" flavor2="11">
       </item>
-      <item path="TdmsParser.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsParser.cpp" ex="false" tool="1" flavor2="11">
       </item>
       <item path="include/TdmsChannel.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -119,7 +125,7 @@
           <incDir>
             <pElem>include</pElem>
           </incDir>
-          <commandLine>-O2</commandLine>
+          <commandLine>-O2 -D_XOPEN_SOURCE=700</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -147,19 +153,25 @@
                             perm="644"
                             owner="root"
                             group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
         </packFileList>
       </packaging>
-      <item path="TdmsChannel.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsChannel.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="TdmsGroup.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsGroup.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="TdmsLeadIn.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsLeadIn.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="TdmsMetaData.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsMetaData.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="TdmsObject.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsObject.cpp" ex="false" tool="1" flavor2="9">
       </item>
-      <item path="TdmsParser.cpp" ex="false" tool="1" flavor2="0">
+      <item path="TdmsParser.cpp" ex="false" tool="1" flavor2="9">
       </item>
       <item path="include/TdmsChannel.h" ex="false" tool="3" flavor2="0">
       </item>

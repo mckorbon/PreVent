@@ -28,23 +28,32 @@
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
-    <conf name="Debug" type="1" platformSpecific="true">
+    <conf name="Debug" type="1">
       <toolsSet>
-        <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
+        <compilerSet>Cygwin|Cygwin</compilerSet>
         <dependencyChecking>true</dependencyChecking>
-        <rebuildPropChanged>true</rebuildPropChanged>
+        <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <cTool>
+          <architecture>2</architecture>
+        </cTool>
         <ccTool>
           <commandlineTool>g++</commandlineTool>
           <incDir>
             <pElem>../Formats</pElem>
           </incDir>
-          <commandLine>-Wno-deprecated -pg -O0 -std=c++17</commandLine>
-          <warningLevel>2</warningLevel>
+          <commandLine>-std=c++17</commandLine>
+          <warningLevel>0</warningLevel>
         </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
         <linkerTool>
+          <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter</output>
           <linkerCopySharedLibs>true</linkerCopySharedLibs>
           <linkerLibItems>
             <linkerLibProjectItem>
@@ -64,7 +73,7 @@
               <makeArtifact PL="../libtdms"
                             CT="2"
                             CN="Debug"
-                            AC="false"
+                            AC="true"
                             BL="true"
                             WD="../libtdms"
                             BC="${MAKE}  -f Makefile CONF=Debug"
@@ -139,128 +148,20 @@
                             owner="root"
                             group="bin"/>
           <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
+                            to="${PACKAGE_TOP_DIR}bin/libFormats.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.dll"
                             perm="755"
                             owner="root"
                             group="bin"/>
           <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
+                            to="${PACKAGE_TOP_DIR}bin/libtdms.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll"
                             perm="755"
                             owner="root"
                             group="bin"/>
           <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
                             perm="755"
                             owner="root"
                             group="bin"/>
@@ -296,7 +197,8 @@
           <incDir>
             <pElem>../Formats</pElem>
           </incDir>
-          <commandLine>-Wno-deprecated -std=c++17</commandLine>
+          <commandLine>-Wno-deprecated --std=c++17</commandLine>
+          <warningLevel>0</warningLevel>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -340,12 +242,6 @@
         <packType>Tar</packType>
         <packFileList>
           <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
                             from="${OUTPUT_PATH}"
                             perm="755"
@@ -358,170 +254,32 @@
                             owner="root"
                             group="bin"/>
           <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libtdms.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
                             from="${OUTPUT_PATH}.exe"
                             perm="755"
                             owner="root"
                             group="bin"/>
           <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
+                            to="${PACKAGE_TOP_DIR}bin/libFormats.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.dll"
                             perm="755"
                             owner="root"
                             group="bin"/>
           <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
+                            to="${PACKAGE_TOP_DIR}bin/libtdms.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll"
                             perm="755"
                             owner="root"
                             group="bin"/>
           <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libFormats.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/libtdms.so"
-                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so"
-                            perm="755"
-                            owner="root"
-                            group="bin"/>
-          <packFileListElem type="File"
-                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
-                            from="${OUTPUT_PATH}"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
                             perm="755"
                             owner="root"
                             group="bin"/>

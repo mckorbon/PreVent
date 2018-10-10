@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux
-CND_DLIB_EXT=so
+CND_PLATFORM=Cygwin-Windows
+CND_DLIB_EXT=dll
 CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -43,8 +43,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-Wno-deprecated -std=c++17
-CXXFLAGS=-Wno-deprecated -std=c++17
+CCFLAGS=-Wno-deprecated --std=c++17
+CXXFLAGS=-Wno-deprecated --std=c++17
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -53,31 +53,31 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-Wl,-rpath,'../Formats/dist/Release/GNU-Linux' -L../Formats/dist/Release/GNU-Linux -lFormats -Wl,-rpath,'../libtdms/dist/Release/GNU-Linux' -L../libtdms/dist/Release/GNU-Linux -ltdms `pkg-config --libs sqlite3`  
+LDLIBSOPTIONS=-L../Formats/dist/Release/Cygwin-Windows -lFormats -L../libtdms/dist/Release/Cygwin-Windows -ltdms `pkg-config --libs sqlite3`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter
-	${CP} ../Formats/dist/Release/GNU-Linux/libFormats.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${CP} ../libtdms/dist/Release/GNU-Linux/libtdms.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter.exe
+	${CP} ../Formats/dist/Release/Cygwin-Windows/libFormats.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
+	${CP} ../libtdms/dist/Release/Cygwin-Windows/libtdms.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter: ../Formats/dist/Release/GNU-Linux/libFormats.so
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter.exe: ../Formats/dist/Release/Cygwin-Windows/libFormats.dll
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter: ../libtdms/dist/Release/GNU-Linux/libtdms.so
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter.exe: ../libtdms/dist/Release/Cygwin-Windows/libtdms.dll
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter ${OBJECTFILES} ${LDLIBSOPTIONS} -s
 
 ${OBJECTDIR}/Db.o: Db.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -s -I../Formats `pkg-config --cflags sqlite3`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Db.o Db.cpp
+	$(COMPILE.cc) -O2 -w -s -I../Formats `pkg-config --cflags sqlite3`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Db.o Db.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -s -I../Formats `pkg-config --cflags sqlite3`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -w -s -I../Formats `pkg-config --cflags sqlite3`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -87,8 +87,8 @@ ${OBJECTDIR}/main.o: main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter
+	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/formatconverter.exe
 
 # Subprojects
 .clean-subprojects:
