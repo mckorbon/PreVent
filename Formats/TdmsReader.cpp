@@ -36,6 +36,8 @@ dr_time TdmsReader::parsetime( const std::string& timestr ) {
 
 int TdmsReader::prepare( const std::string& recordset, std::unique_ptr<SignalSet>& info ) {
   output( ) << "warning: TDMS reader cannot split dataset by day (...yet)" << std::endl;
+  output( ) << "warning: Signals are assumed to be sampled at 1024ms intervals, not 1000ms" << std::endl;
+
   int rslt = Reader::prepare( recordset, info );
   if ( 0 != rslt ) {
     return rslt;
@@ -70,15 +72,13 @@ ReadResult TdmsReader::fill( std::unique_ptr<SignalSet>& info, const ReadResult&
         if ( dataCount ) {
           std::string name = ch->getName( );
           name = name.substr( 2, name.length( ) - 3 );
-          output( ) << "reading " << name << std::endl;
+          // output( ) << "reading " << name << std::endl;
           dr_time time = 0;
-          int timeinc = 1024; // philips runs at 1.024s, or 1024 ms
+          const int timeinc = 1024; // philips runs at 1.024s, or 1024 ms
           int freq = 0; // waves have an integer frequency
           auto propmap = ch->getProperties( );
-          bool doDoubleValues = false;
 
-          bool iswave = ( propmap.count( "wf_increment" ) > 0 &&
-              ( std::stod( propmap.at( "wf_increment" ) ) * 1000 ) < 1024 );
+          bool iswave = ( propmap.count( "Frequency" ) > 0 && std::stod( propmap.at( "Frequency" ) ) > 1.0 );
 
           // figure out if this is a wave or a vital
           std::unique_ptr<SignalData>& signal = ( iswave
@@ -91,7 +91,7 @@ ReadResult TdmsReader::fill( std::unique_ptr<SignalSet>& info, const ReadResult&
           }
 
           for ( auto& p : propmap ) {
-            //output( ) << p.first << " => " << p.second << std::endl;
+            // output( ) << p.first << " => " << p.second << std::endl;
 
             if ( "Unit_String" == p.first ) {
               signal->setUom( p.second );
@@ -100,41 +100,25 @@ ReadResult TdmsReader::fill( std::unique_ptr<SignalSet>& info, const ReadResult&
               time = parsetime( p.second );
             }
             else if ( "wf_increment" == p.first ) {
-              // already handled above
+              // ignored--we're forcing 1024ms increments
             }
             else if ( "Frequency" == p.first ) {
               double f = std::stod( p.second );
 
-              if ( f > 1 ) { // wave!
-                double intpart;
-                double fraction = std::modf( f, &intpart );
-                if ( 0 == fraction ) {
-                  freq = (int) f;
-                }
-                else {
-                  output( ) << "doubling freqency for " << name << std::endl;
-                  // if the Frequency is 62.5, double all values
-                  // so we can say it's 125
-                  doDoubleValues = true;
-                  freq = (int) ( f * 2 );
+              freq = ( f < 1 ? 1 : (int) ( f * 1.024 ) );
+              signal->setMeta( "Notes", "The frequency from the input file was multiplied by 1.024" );
+            }
 
-                  signal->setMeta( "Notes",
-                      "The sampling values have been doubled to correct non-integer sample rate" );
-                }
-              }
-              else { // vital sign, so one data point per reading
-                freq = 1;
-              }
-            }
-            else {
-              signal->setMeta( p.first, p.second );
-            }
+            signal->setMeta( p.first, p.second );
           }
 
+          //std::cout << signal->name( ) << ( iswave ? " wave" : " vital" ) << "; timeinc: " << timeinc << "; freq: " << freq << std::endl;
           signal->setChunkIntervalAndSampleRate( timeinc, freq );
 
           unsigned int type = ch->getDataType( );
           std::vector<double> data = ch->getDataVector( );
+          //continue;
+
           if ( type == TdmsChannel::tdsTypeComplexSingleFloat
               || type == TdmsChannel::tdsTypeComplexDoubleFloat ) {
             std::cerr << "WARNING: complex data types are not yet supported"
@@ -177,74 +161,22 @@ ReadResult TdmsReader::fill( std::unique_ptr<SignalSet>& info, const ReadResult&
                 }
 
                 if ( cnt == freq ) {
-                  writeWaveChunkAndReset( cnt, nancount, doubles, seenFloat,
-                      signal, time, timeinc );
-                }
-
-                // if we're doubling values, we need to do the whole thing again
-                // because we don't know if we started with one extra value,
-                // or finished with one.
-                if ( doDoubleValues ) {
-                  doubles.push_back( nan ? SignalData::MISSING_VALUE : d );
-                  cnt++;
-
-                  if ( nan ) {
-                    nancount++;
-                  }
-                  else {
-                    double fraction = std::modf( d, &intpart );
-                    if ( 0 != fraction ) {
-                      seenFloat = true;
-                    }
-                  }
-
-                  if ( cnt == freq ) {
-                    writeWaveChunkAndReset( cnt, nancount, doubles, seenFloat,
-                        signal, time, timeinc );
-                  }
+                  writeWaveChunkAndReset( cnt, nancount, doubles, seenFloat, signal, time, timeinc );
                 }
               }
 
               if ( 0 != cnt && nancount != cnt ) {
                 // uh oh...we have some un-flushed data (probably an interrupted
                 // read) so normalize it, then add it
-
-                std::stringstream vals;
-                if ( seenFloat ) {
-                  // tdms file seems to use 3 decimal places for everything
-                  // so make sure we don't have extra 0s running around
-                  vals << std::setprecision( 3 ) << std::fixed;
-                }
-
-                if ( SignalData::MISSING_VALUE == doubles[0] ) {
-                  vals << SignalData::MISSING_VALUESTR;
-                }
-                else {
-                  vals << doubles[0];
-                }
-
-                for ( int i = 1; i < cnt; i++ ) {
-                  vals << ",";
-                  if ( SignalData::MISSING_VALUE == doubles[i] ) {
-                    vals << SignalData::MISSING_VALUESTR;
-                  }
-                  else {
-                    vals << doubles[i];
-                  }
-                }
                 for (; cnt < freq; cnt++ ) {
-                  vals << "," << SignalData::MISSING_VALUESTR;
+                  doubles.push_back( SignalData::MISSING_VALUE );
                 }
 
-                DataRow row( time, vals.str( ) );
-                signal->add( row );
-                time += timeinc;
+                writeWaveChunkAndReset( cnt, nancount, doubles, seenFloat, signal, time, timeinc );
               }
             }
             else {
               // vitals are much easier...
-              signal->setChunkIntervalAndSampleRate( timeinc, freq );
-
               for ( auto& d : data ) {
                 if ( !isnan( d ) ) {
                   // check if our number ends in .000000...
