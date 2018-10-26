@@ -64,15 +64,16 @@ OBJECTFILES= \
 	${OBJECTDIR}/WfdbWriter.o \
 	${OBJECTDIR}/Writer.o \
 	${OBJECTDIR}/XmlReaderBase.o \
-	${OBJECTDIR}/ZlReader.o
+	${OBJECTDIR}/ZlReader.o \
+	${OBJECTDIR}/ZlReader2.o
 
 
 # C Compiler Flags
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-D_XOPEN_SOURCE=700 -std=c++17
-CXXFLAGS=-D_XOPEN_SOURCE=700 -std=c++17
+CCFLAGS=-std=c++17
+CXXFLAGS=-std=c++17
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -242,6 +243,11 @@ ${OBJECTDIR}/ZlReader.o: ZlReader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -s -I../libtdms/include `pkg-config --cflags zlib` `pkg-config --cflags matio` `pkg-config --cflags expat` -std=c++14   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ZlReader.o ZlReader.cpp
+
+${OBJECTDIR}/ZlReader2.o: ZlReader2.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -s -I../libtdms/include `pkg-config --cflags zlib` `pkg-config --cflags matio` `pkg-config --cflags expat`    -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ZlReader2.o ZlReader2.cpp
 
 # Subprojects
 .build-subprojects:

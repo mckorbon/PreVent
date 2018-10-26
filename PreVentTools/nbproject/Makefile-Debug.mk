@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux
-CND_DLIB_EXT=so
+CND_PLATFORM=Cygwin-Windows
+CND_DLIB_EXT=dll
 CND_CONF=Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -55,21 +55,21 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`pkg-config --libs zlib` /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so -Wl,-rpath,'../Formats/dist/Debug/GNU-Linux' -L../Formats/dist/Debug/GNU-Linux -lFormats -Wl,-rpath,'../libtdms/dist/Debug/GNU-Linux' -L../libtdms/dist/Debug/GNU-Linux -ltdms  
+LDLIBSOPTIONS=`pkg-config --libs zlib` /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so -L../Formats/dist/Debug/Cygwin-Windows -lFormats -L../libtdms/dist/Debug/Cygwin-Windows -ltdms  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools: ../Formats/dist/Debug/GNU-Linux/libFormats.so
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: ../Formats/dist/Debug/Cygwin-Windows/libFormats.dll
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools: ../libtdms/dist/Debug/GNU-Linux/libtdms.so
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: ../libtdms/dist/Debug/Cygwin-Windows/libtdms.dll
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools ${OBJECTFILES} ${LDLIBSOPTIONS}
 
@@ -101,8 +101,8 @@ ${OBJECTDIR}/main.o: main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libhdf5.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libhdf5_cpp.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.so
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools
+	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libhdf5.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libhdf5_cpp.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe
 
 # Subprojects
 .clean-subprojects:
