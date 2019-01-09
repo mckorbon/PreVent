@@ -160,10 +160,6 @@ ReadResult Hdf5Reader::fill( std::unique_ptr<SignalSet>& info, const ReadResult&
   return ReadResult::END_OF_FILE;
 }
 
-size_t Hdf5Reader::getSize( const std::string & input ) const {
-  return 1;
-}
-
 std::vector<dr_time> Hdf5Reader::readTimes( H5::DataSet & dataset ) const {
   //std::cout << group.getObjName( ) << " " << name << std::endl;
   H5::DataSpace dataspace = dataset.getSpace( );
@@ -401,7 +397,7 @@ void Hdf5Reader::fillWave( std::unique_ptr<SignalData>& signal, H5::DataSet& dat
       values.append( valstr );
 
       valcnt++;
-      if ( valsPerTime == valcnt || count[0] < slabrows ) {
+      if ( valsPerTime == valcnt ) {
         DataRow drow( times[timecounter++], values );
         signal->add( drow );
         values.clear( );
