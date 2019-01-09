@@ -249,11 +249,6 @@ ${OBJECTDIR}/ZlReader2.o: ZlReader2.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -s -I../libtdms/include `pkg-config --cflags zlib` `pkg-config --cflags matio` `pkg-config --cflags expat`    -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ZlReader2.o ZlReader2.cpp
 
-${OBJECTDIR}/ZlReader2.o: ZlReader2.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -I../libtdms/include `pkg-config --cflags zlib` `pkg-config --cflags matio` `pkg-config --cflags expat`   -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ZlReader2.o ZlReader2.cpp
-
 # Subprojects
 .build-subprojects:
 	cd ../libtdms && ${MAKE}  -f Makefile CONF=Release
