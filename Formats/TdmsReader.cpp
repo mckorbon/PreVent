@@ -26,10 +26,21 @@ TdmsReader::~TdmsReader( ) {
 
 }
 
-dr_time TdmsReader::parsetime( const std::string& timestr ) {
+dr_time TdmsReader::parsetime( const std::string& tmptimestr ) {
   // sample: 14.12.2017 17:49:24,0.000000
+  
+  // first: remove the comma and everything after it
+  size_t x = tmptimestr.rfind( ',' );
+  std::string timestr = tmptimestr.substr( 0, x );
+
+  // there appears to be a bug in the time parser that requires a leading 0
+  // for days < 10, so check this situation
+  if ( '.' == timestr[1] ) {
+    timestr = "0" + timestr;
+  }
+
   tm brokenTime;
-  strptime2( timestr.c_str( ), "%d.%m.%Y %H:%M:%S", &brokenTime );
+  strptime2( timestr, "%d.%m.%Y %H:%M:%S", &brokenTime );
   time_t sinceEpoch = timegm( &brokenTime );
   return sinceEpoch * 1000;
 }
@@ -98,6 +109,9 @@ ReadResult TdmsReader::fill( std::unique_ptr<SignalSet>& info, const ReadResult&
             }
             else if ( "wf_starttime" == p.first ) {
               time = parsetime( p.second );
+              if ( time < 0 ) {
+                std::cout << name << ": " << p.first << " => " << p.second << std::endl;
+              }
             }
             else if ( "wf_increment" == p.first ) {
               // ignored--we're forcing 1024ms increments
