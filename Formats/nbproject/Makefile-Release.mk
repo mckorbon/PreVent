@@ -49,6 +49,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/MatWriter.o \
 	${OBJECTDIR}/NullReader.o \
 	${OBJECTDIR}/OffsetTimeSignalSet.o \
+	${OBJECTDIR}/Options.o \
 	${OBJECTDIR}/Reader.o \
 	${OBJECTDIR}/SignalData.o \
 	${OBJECTDIR}/SignalDataWrapper.o \
@@ -163,6 +164,11 @@ ${OBJECTDIR}/OffsetTimeSignalSet.o: OffsetTimeSignalSet.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -s -I../libtdms/include `pkg-config --cflags zlib` `pkg-config --cflags matio` `pkg-config --cflags expat`    -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/OffsetTimeSignalSet.o OffsetTimeSignalSet.cpp
+
+${OBJECTDIR}/Options.o: Options.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -s -I../libtdms/include `pkg-config --cflags zlib` `pkg-config --cflags matio` `pkg-config --cflags expat`    -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Options.o Options.cpp
 
 ${OBJECTDIR}/Reader.o: Reader.cpp
 	${MKDIR} -p ${OBJECTDIR}
