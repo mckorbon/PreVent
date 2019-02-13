@@ -29,7 +29,7 @@ const int BasicSignalData::CACHE_LIMIT = 30000;
 
 BasicSignalData::BasicSignalData( const std::string& name, bool wavedata )
 : label( name ), firstdata( std::numeric_limits<dr_time>::max( ) ), lastdata( 0 ),
-datacount( 0 ), livecount( 0 ), popping( false ), iswave( wavedata ),
+datacount( 0 ), livecount( 0 ), file( nullptr ), popping( false ), iswave( wavedata ),
 highval( -std::numeric_limits<double>::max( ) ),
 lowval( std::numeric_limits<double>::max( ) ), nocache( Options::asBool( OptionsKey::NOCACHE ) ) {
   scale( 0 );
@@ -43,8 +43,8 @@ lowval( std::numeric_limits<double>::max( ) ), nocache( Options::asBool( Options
 
 BasicSignalData::~BasicSignalData( ) {
   data.clear( );
-  if ( file.is_open( ) ) {
-    file.close( );
+  if ( nullptr != file ) {
+    std::fclose( file );
   }
 }
 
@@ -86,11 +86,12 @@ std::unique_ptr<DataRow> BasicSignalData::pop( ) {
     startPopping( );
   }
 
-  if ( file.is_open( ) && data.empty( ) ) {
+  if ( nullptr != file && data.empty( ) ) {
     int lines = uncache( );
     livecount += lines;
     if ( 0 == lines ) {
-      file.close( );
+      std::fclose( file );
+      file = nullptr;
     }
   }
 
@@ -112,9 +113,9 @@ const std::string& BasicSignalData::name( ) const {
 
 void BasicSignalData::startPopping( ) {
   popping = true;
-  if ( file.is_open( ) ) {
+  if ( nullptr != file ) {
     cache( ); // copy any extra rows to disk
-    file.seekg( 0, std::ios::beg );
+    std::rewind( file );
   }
 }
 
@@ -131,55 +132,26 @@ void BasicSignalData::cache( ) {
     return;
   }
 
-  std::cout << "caching signal data" << std::endl;
+  std::stringstream ss;
 
-  if ( !file.is_open() ) {
-#ifdef __CYGWIN__
-    std::string fname( std::to_string( rand( ) ) );
-    fname += ( iswave ? "-wave.tmp" : "-vital.tmp" );
-    std::cout << "\t0 cache file: " << fname << std::endl;
-    //    char * tmpdir = getenv( "TMP" );
-    //    std::cout << "\t1 cache file: " << fname << std::endl;
-    //    if ( nullptr == tmpdir ) {
-    //      tmpdir = getenv( "TEMP" );
-    //    }
-    //    if ( nullptr != tmpdir ) {
-    //      fname = tmpdir + dirsep + fname;
-    //    }
-
-    file.open( fname );
-    if ( file.is_open( ) ) {
-      std::cout << "opened" << std::endl;
-      file << "this is a test" << std::endl;
-    }
-    else{
-      
-    }
-    
-    
-    file.close();
-    file.open( fname );    
-#else
-    std::cout << "skipping cygwin ifdef" << std::endl;
-    file.open( tmpnam( nullptr ) );
-#endif
+  if ( nullptr == file ) {
+    file = tmpfile( );
   }
 
-  std::cout << "here 0" << std::endl;
   while ( !data.empty( ) ) {
     std::unique_ptr<DataRow> a = std::move( data.front( ) );
     data.pop_front( );
-    std::cout << "popped; size: " << data.size( ) << std::endl;
-    file << a->time << " " << a->data << " " << a->high << " " << a->low << " ";
+
+    ss << a->time << " " << a->data << " " << a->high << " " << a->low << " ";
     if ( !a->extras.empty( ) ) {
       for ( const auto& x : a->extras ) {
-        file << "|" << x.first << "=" << x.second;
+        ss << "|" << x.first << "=" << x.second;
       }
     }
-    file << std::endl;
+    ss << "\n";
   }
-
-  std::cout << "here 2" << std::endl;
+  std::fputs( ss.str( ).c_str( ), file );
+  fflush( file );
   livecount = 0;
 }
 
@@ -228,11 +200,16 @@ bool BasicSignalData::wave( ) const {
 
 int BasicSignalData::uncache( int max ) {
   int loop = 0;
+  const int BUFFSZ = 4096;
+  char buff[BUFFSZ];
 
-  while ( loop < max && file ) {
-    std::string read;
-    file>>read;
-    std::cout << "here: " << read << std::endl;
+  while ( loop < max ) {
+    char * justread = std::fgets( buff, BUFFSZ, file );
+    if ( NULL == justread ) {
+      break;
+    }
+    std::string read( justread );
+
     // first things first: if we have attributes, cut them out 
     const size_t barpos = read.find( "|" );
     std::string extras;
