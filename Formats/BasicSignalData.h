@@ -24,6 +24,7 @@
 #include <deque>
 #include <set>
 #include <vector>
+#include <fstream>
 #include "dr_time.h"
 
 class DataRow;
@@ -86,7 +87,7 @@ private:
   size_t livecount; // how big is out data list in memory?
   std::list<std::unique_ptr<DataRow>> data;
   std::deque<dr_time> dates;
-  std::FILE * file;
+  std::fstream file;
   bool popping;
   bool iswave;
   double highval;

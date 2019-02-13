@@ -17,16 +17,17 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <fstream>
 #include <cstdio>
 #include <limits>
 #include <queue>
+#include <cstdlib>
+#include "config.h"
 
 const int BasicSignalData::CACHE_LIMIT = 30000;
 
 BasicSignalData::BasicSignalData( const std::string& name, bool wavedata )
 : label( name ), firstdata( std::numeric_limits<dr_time>::max( ) ), lastdata( 0 ),
-datacount( 0 ), livecount( 0 ), file( nullptr ), popping( false ), iswave( wavedata ),
+datacount( 0 ), livecount( 0 ), popping( false ), iswave( wavedata ),
 highval( -std::numeric_limits<double>::max( ) ),
 lowval( std::numeric_limits<double>::max( ) ) {
   scale( 0 );
@@ -40,8 +41,8 @@ lowval( std::numeric_limits<double>::max( ) ) {
 
 BasicSignalData::~BasicSignalData( ) {
   data.clear( );
-  if ( nullptr != file ) {
-    std::fclose( file );
+  if ( file.is_open( ) ) {
+    file.close( );
   }
 }
 
@@ -82,12 +83,11 @@ std::unique_ptr<DataRow> BasicSignalData::pop( ) {
     startPopping( );
   }
 
-  if ( nullptr != file && data.empty( ) ) {
+  if ( file.is_open( ) && data.empty( ) ) {
     int lines = uncache( );
     livecount += lines;
     if ( 0 == lines ) {
-      std::fclose( file );
-      file = nullptr;
+      file.close( );
     }
   }
 
@@ -109,9 +109,9 @@ const std::string& BasicSignalData::name( ) const {
 
 void BasicSignalData::startPopping( ) {
   popping = true;
-  if ( nullptr != file ) {
+  if ( file.is_open( ) ) {
     cache( ); // copy any extra rows to disk
-    std::rewind( file );
+    file.seekg( 0, std::ios::beg );
   }
 }
 
@@ -124,26 +124,48 @@ double BasicSignalData::lowwater( ) const {
 }
 
 void BasicSignalData::cache( ) {
-  std::stringstream ss;
+  std::cout << "caching signal data" << std::endl;
 
-  if ( nullptr == file ) {
-    file = tmpfile( );
+  if ( file.is_open() ) {
+#ifdef __CYGWIN__
+    std::string fname( "c:\\temp\\" + std::to_string( rand( ) ) );
+    fname += ( iswave ? "-wave.tmp" : "-vital.tmp" );
+    std::cout << "\t0 cache file: " << fname << std::endl;
+    //    char * tmpdir = getenv( "TMP" );
+    //    std::cout << "\t1 cache file: " << fname << std::endl;
+    //    if ( nullptr == tmpdir ) {
+    //      tmpdir = getenv( "TEMP" );
+    //    }
+    //    if ( nullptr != tmpdir ) {
+    //      fname = tmpdir + dirsep + fname;
+    //    }
+
+    file.open( fname.c_str( ) );
+    if ( file.is_open( ) ) {
+      std::cout << "opened" << std::endl;
+      file << "this is a test" << std::endl;
+    }
+#else
+    std::cout << "skipping cygwin ifdef" << std::endl;
+    file.open( tmpnam( nullptr ) );
+#endif
   }
 
+  std::cout << "here 0" << std::endl;
   while ( !data.empty( ) ) {
     std::unique_ptr<DataRow> a = std::move( data.front( ) );
     data.pop_front( );
-
-    ss << a->time << " " << a->data << " " << a->high << " " << a->low << " ";
+    std::cout << "popped; size: " << data.size( ) << std::endl;
+    file << a->time << " " << a->data << " " << a->high << " " << a->low << " ";
     if ( !a->extras.empty( ) ) {
       for ( const auto& x : a->extras ) {
-        ss << "|" << x.first << "=" << x.second;
+        file << "|" << x.first << "=" << x.second;
       }
     }
-    ss << "\n";
+    file << std::endl;
   }
-  std::fputs( ss.str( ).c_str( ), file );
-  fflush( file );
+
+  std::cout << "here 2" << std::endl;
   livecount = 0;
 }
 
@@ -192,16 +214,9 @@ bool BasicSignalData::wave( ) const {
 
 int BasicSignalData::uncache( int max ) {
   int loop = 0;
-  const int BUFFSZ = 4096;
-  char buff[BUFFSZ];
 
-  while ( loop < max ) {
-    char * justread = std::fgets( buff, BUFFSZ, file );
-    if ( NULL == justread ) {
-      break;
-    }
-    std::string read( justread );
-
+  std::string read;
+  while ( loop < max && std::getline(read, file)) {
     // first things first: if we have attributes, cut them out 
     const size_t barpos = read.find( "|" );
     std::string extras;
@@ -351,7 +366,7 @@ std::vector<std::string> BasicSignalData::eventtypes( ) {
 
 std::vector<dr_time> BasicSignalData::events( const std::string& type ) {
   return ( 0 == namedevents.count( type )
-      ? std::vector<dr_time>( )
-      : namedevents.at( type ) );
+          ? std::vector<dr_time>( )
+          : namedevents.at( type ) );
 }
 
