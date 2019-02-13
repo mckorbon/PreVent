@@ -92,6 +92,7 @@ private:
   bool iswave;
   double highval;
   double lowval;
+	bool nocache;
   static const int CACHE_LIMIT;
 
   std::map<std::string, std::string> metadatas;

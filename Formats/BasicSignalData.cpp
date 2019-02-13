@@ -13,6 +13,7 @@
 
 #include "BasicSignalData.h"
 #include "DataRow.h"
+#include "Options.h"
 
 #include <string>
 #include <iostream>
@@ -21,6 +22,7 @@
 #include <limits>
 #include <queue>
 #include <cstdlib>
+#include <istream>
 #include "config.h"
 
 const int BasicSignalData::CACHE_LIMIT = 30000;
@@ -29,7 +31,7 @@ BasicSignalData::BasicSignalData( const std::string& name, bool wavedata )
 : label( name ), firstdata( std::numeric_limits<dr_time>::max( ) ), lastdata( 0 ),
 datacount( 0 ), livecount( 0 ), popping( false ), iswave( wavedata ),
 highval( -std::numeric_limits<double>::max( ) ),
-lowval( std::numeric_limits<double>::max( ) ) {
+lowval( std::numeric_limits<double>::max( ) ), nocache( Options::asBool( OptionsKey::NOCACHE ) ) {
   scale( 0 );
   setChunkIntervalAndSampleRate( 2000, 1 );
   setUom( "Uncalib" );
@@ -52,6 +54,7 @@ std::unique_ptr<SignalData> BasicSignalData::shallowcopy( bool includedates ) {
   if ( includedates ) {
     copy->firstdata = this->firstdata;
     copy->lastdata = this->lastdata;
+    copy->nocache = this->nocache;
   }
 
   for ( auto x : metad( ) ) {
@@ -124,11 +127,15 @@ double BasicSignalData::lowwater( ) const {
 }
 
 void BasicSignalData::cache( ) {
+  if ( nocache ) {
+    return;
+  }
+
   std::cout << "caching signal data" << std::endl;
 
-  if ( file.is_open() ) {
+  if ( !file.is_open() ) {
 #ifdef __CYGWIN__
-    std::string fname( "c:\\temp\\" + std::to_string( rand( ) ) );
+    std::string fname( std::to_string( rand( ) ) );
     fname += ( iswave ? "-wave.tmp" : "-vital.tmp" );
     std::cout << "\t0 cache file: " << fname << std::endl;
     //    char * tmpdir = getenv( "TMP" );
@@ -140,11 +147,18 @@ void BasicSignalData::cache( ) {
     //      fname = tmpdir + dirsep + fname;
     //    }
 
-    file.open( fname.c_str( ) );
+    file.open( fname );
     if ( file.is_open( ) ) {
       std::cout << "opened" << std::endl;
       file << "this is a test" << std::endl;
     }
+    else{
+      
+    }
+    
+    
+    file.close();
+    file.open( fname );    
 #else
     std::cout << "skipping cygwin ifdef" << std::endl;
     file.open( tmpnam( nullptr ) );
@@ -215,8 +229,10 @@ bool BasicSignalData::wave( ) const {
 int BasicSignalData::uncache( int max ) {
   int loop = 0;
 
-  std::string read;
-  while ( loop < max && std::getline(read, file)) {
+  while ( loop < max && file ) {
+    std::string read;
+    file>>read;
+    std::cout << "here: " << read << std::endl;
     // first things first: if we have attributes, cut them out 
     const size_t barpos = read.find( "|" );
     std::string extras;

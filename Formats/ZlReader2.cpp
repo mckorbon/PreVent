@@ -85,7 +85,7 @@ int ZlReader2::prepare( const std::string& input, std::unique_ptr<SignalSet>& da
 
     myfile->seekg( std::ios::beg ); // seek back to the beginning of the file
     signalToReaderLkp[signal] = std::unique_ptr<StreamChunkReader>( new StreamChunkReader( myfile,
-        ( islibz || isgz ), false, isgz ) );
+            ( islibz || isgz ), false, isgz ) );
   }
 
   return 0;
@@ -108,7 +108,7 @@ ReadResult ZlReader2::fill( std::unique_ptr<SignalSet>& info, const ReadResult& 
   //  ],
   //  ...
   // ]
-
+  // output( ) << "into fill" << std::endl;
   ReadResult ss = ReadResult::END_OF_FILE;
   for ( const auto& x : signalToReaderLkp ) {
     // the pull parsing doesn't seem to work quite yet
@@ -121,6 +121,7 @@ ReadResult ZlReader2::fill( std::unique_ptr<SignalSet>& info, const ReadResult& 
     while ( ReadResult::NORMAL == x.second->rr ) {
       // process what we just read
       if ( "" != data ) {
+        //output( ) << "json parsing" << std::endl;
         auto jj = nlohmann::json::parse( data );
 
         // we have one array of many arrays
@@ -130,6 +131,7 @@ ReadResult ZlReader2::fill( std::unique_ptr<SignalSet>& info, const ReadResult& 
           std::string data = j2[2];
 
           if ( added ) {
+            added = false; // no reason to keep reseting this after the first time
             int readings = (int) DataRow::ints( data ).size( );
             signal->setChunkIntervalAndSampleRate( 250, readings );
           }
@@ -163,7 +165,7 @@ ReadResult ZlReader2::fill( std::unique_ptr<SignalSet>& info, const ReadResult& 
       }
     }
     else {
-      ss == x.second->rr;
+      ss = x.second->rr;
     }
   }
   return ss;
