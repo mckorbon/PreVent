@@ -40,7 +40,7 @@ void helpAndExit( char * progname, std::string msg = "" ) {
       << std::endl << "\t-n or --no-break or --one-file"
       << std::endl << "\t-C or --no-cache"
       << std::endl << "\t-a or --anonymize, --anon, or --anonymous"
-      << std::endl << "\tValid input formats: wfdb, hdf5, stpxml, cpcxml, stpjson, tdms, "
+      << std::endl << "\tValid input formats: wfdb, hdf5, stpxml, cpcxml, stpjson, tdms, medi, zl"
       << std::endl << "\tValid output formats: wfdb, hdf5, mat, csv"
       << std::endl << "\tthe --sqlite option will create/add metadata to a sqlite database"
       << std::endl << "\tthe --pattern option recognizes these format specifiers:"

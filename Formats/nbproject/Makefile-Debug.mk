@@ -170,6 +170,11 @@ ${OBJECTDIR}/Options.o: Options.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I../libtdms/include `pkg-config --cflags zlib` `pkg-config --cflags matio` `pkg-config --cflags expat`    -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Options.o Options.cpp
 
+${OBJECTDIR}/Options.o: Options.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s -I../libtdms/include `pkg-config --cflags zlib` `pkg-config --cflags matio` `pkg-config --cflags expat`   -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Options.o Options.cpp
+
 ${OBJECTDIR}/Reader.o: Reader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"

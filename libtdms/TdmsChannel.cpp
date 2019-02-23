@@ -2,10 +2,14 @@
 #include <cstring>
 #include <stdlib.h>
 
+#include "TdmsParser.h"
+#include "TdmsListener.h"
+
 using namespace std;
 
-TdmsChannel::TdmsChannel(const std::string& name, std::iendianfstream& f)
-  : name(name), file(f), dataType(0), typeSize(0), dimension(0), nvalues(0)
+TdmsChannel::TdmsChannel(const std::string& name, std::iendianfstream& f, TdmsParser * p)
+  : name(name), file(f), dataType(0), typeSize(0), dimension(0), nvalues(0),
+    d_parser(p)
 {
 }
 
@@ -86,8 +90,17 @@ void TdmsChannel::readRawData(unsigned long long total_chunk_size, bool verbose)
 	if (dataType == TdmsChannel::tdsTypeString)
 		readStrings();
 	else {
+    if( d_parser->hasListeners() ) {
+      dataVector.reserve( nvalues );
+    }
 		for (unsigned int i = 0; i < nvalues; ++i)
 			readValue(dataType, false);
+    if( d_parser->hasListeners() ){
+      for( auto& l : d_parser->listeners() ){
+        l->newValueChunk( this, dataVector );
+      }
+      dataVector.clear();
+    }
 	}
 
 	if (verbose)
@@ -170,16 +183,23 @@ void TdmsChannel::readStrings()
 		unsigned int size = offset - POS;
 		string s(size, 0);
 		file >> s;
-		stringVector.push_back(s);
+    stringVector.push_back( s );
 		//printf("i: %d offset: %d size = %d s: %s POS %d @ 0x%X\n", i, offset, size, s.c_str(), POS, (unsigned int)file.tellg());
 		POS = offset;
 	}
+
+  if( d_parser->hasListeners() ){
+    // if we have listeners, provide what we just read, and clear the results
+    for( auto& l : d_parser->listeners() ){
+      l->newValueChunk(this, stringVector);
+    }
+    stringVector.clear();
+  }
 }
+
 
 string TdmsChannel::readValue(unsigned int itype, bool verbose)
 {
-	int size = 100;
-	char output [size];
 
 	if (verbose)
 		printf("	Read value for channel: %s\n", name.c_str());
@@ -202,7 +222,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((double)val);
 			if (verbose)
 				printf("%d (type = %d)\n", (int)val, itype);
-			snprintf(output, size, "%d", val);
+			//snprintf(output, size, "%d", val);
 		}
 		break;
 
@@ -214,7 +234,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			if (verbose)
 				printf("%d (type = %d)\n", val, itype);
 
-			snprintf(output, size, "%d", val);
+			//snprintf(output, size, "%d", val);
 		}
 		break;
 
@@ -225,7 +245,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((double)val);
 			if (verbose)
 				printf("%d (type = %d)\n", (int)val, itype);
-			snprintf(output, size, "%d", (int)val);
+			//snprintf(output, size, "%d", (int)val);
 		}
 		break;
 
@@ -236,7 +256,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((double)val);
 			if (verbose)
 				printf("%d (type = %d)\n", (int)val, itype);
-			snprintf(output, size, "%d", val);
+			//snprintf(output, size, "%d", val);
 		}
 		break;
 
@@ -248,7 +268,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((double)val);
 			if (verbose)
 				printf("%d (type = %d)\n", (int)val, itype);
-			snprintf(output, size, "%d", val);
+			//snprintf(output, size, "%d", val);
 		}
 		break;
 
@@ -259,7 +279,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((double)val);
 			if (verbose)
 				printf("%u (type = %d)\n", val, itype);
-			snprintf(output, size, "%u", val);
+			//snprintf(output, size, "%u", val);
 		}
 		break;
 
@@ -270,7 +290,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((double)val);
 			if (verbose)
 				printf("%u (type = %d)\n", (unsigned int)val, itype);
-			snprintf(output, size, "%u", (unsigned int)val);
+			//snprintf(output, size, "%u", (unsigned int)val);
 		}
 		break;
 
@@ -282,7 +302,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((float)val);
 			if (verbose)
 				printf("%f (type = %d)\n", val, itype);
-			snprintf(output, size, "%f", val);
+			//snprintf(output, size, "%f", val);
 		}
 		break;
 
@@ -295,7 +315,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			if (verbose)
 				printf("%f (type = %d)\n", val, itype);
 
-			snprintf(output, size, "%f", val);
+			//snprintf(output, size, "%f", val);
 		}
 		break;
 
@@ -307,7 +327,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((double)val);
 			if (verbose)
 				printf("%f (type = %d)\n", (double)val, itype);
-			snprintf(output, size, "%f", (double)val);
+			//snprintf(output, size, "%f", (double)val);
 		}
 		break;
 
@@ -321,7 +341,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendValue((double)val);
 			if (verbose)
 				printf("%d (type = %d)\n", val, itype);
-			snprintf(output, size, "%d", val);
+			//snprintf(output, size, "%d", val);
 		}
 		break;
 
@@ -348,7 +368,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendImaginaryValue((float)ival);
 			if (verbose)
 				printf("%g+i*%g (type = 0x%X)\n", rval, ival, itype);
-			snprintf(output, size, "%g+i*%g", rval, ival);
+			//snprintf(output, size, "%g+i*%g", rval, ival);
 		}
 		break;
 
@@ -361,7 +381,7 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 			appendImaginaryValue(ival);
 			if (verbose)
 				printf("%g+i*%g (type = 0x%X)\n", rval, ival, itype);
-			snprintf(output, size, "%g+i*%g", rval, ival);
+			//snprintf(output, size, "%g+i*%g", rval, ival);
 		}
 		break;
 
@@ -373,5 +393,5 @@ string TdmsChannel::readValue(unsigned int itype, bool verbose)
 		break;
 	}
 
-	return string(output);
+	return "";//string(output);
 }

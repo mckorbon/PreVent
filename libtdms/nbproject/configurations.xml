@@ -7,6 +7,7 @@
       <itemPath>include/TdmsChannel.h</itemPath>
       <itemPath>include/TdmsGroup.h</itemPath>
       <itemPath>include/TdmsLeadIn.h</itemPath>
+      <itemPath>include/TdmsListener.h</itemPath>
       <itemPath>include/TdmsMetaData.h</itemPath>
       <itemPath>include/TdmsObject.h</itemPath>
       <itemPath>include/TdmsParser.h</itemPath>
@@ -48,11 +49,11 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <standard>11</standard>
           <incDir>
             <pElem>include</pElem>
           </incDir>
-          <commandLine>-g -O0 -D_XOPEN_SOURCE=700</commandLine>
+          <commandLine>-std=c++17</commandLine>
+          <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.${CND_DLIB_EXT}</output>
@@ -100,6 +101,8 @@
       </item>
       <item path="include/TdmsLeadIn.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/TdmsListener.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/TdmsMetaData.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/TdmsObject.h" ex="false" tool="3" flavor2="0">
@@ -125,7 +128,8 @@
           <incDir>
             <pElem>include</pElem>
           </incDir>
-          <commandLine>-O2 -D_XOPEN_SOURCE=700</commandLine>
+          <commandLine>-std=c++17</commandLine>
+          <warningLevel>2</warningLevel>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -178,6 +182,8 @@
       <item path="include/TdmsGroup.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/TdmsLeadIn.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/TdmsListener.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/TdmsMetaData.h" ex="false" tool="3" flavor2="0">
       </item>
