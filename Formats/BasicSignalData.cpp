@@ -155,6 +155,10 @@ void BasicSignalData::cache( ) {
   livecount = 0;
 }
 
+size_t BasicSignalData::inmemsize( ) const{
+  return data.size();
+}
+
 void BasicSignalData::add( const DataRow& row ) {
 
   if ( livecount >= CACHE_LIMIT ) {
@@ -200,7 +204,7 @@ bool BasicSignalData::wave( ) const {
 
 int BasicSignalData::uncache( int max ) {
   int loop = 0;
-  const int BUFFSZ = 4096;
+  const int BUFFSZ = 8192;
   char buff[BUFFSZ];
 
   while ( loop < max ) {
