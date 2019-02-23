@@ -49,7 +49,7 @@ void TdmsReader::newGroup( TdmsGroup * grp ) {
 }
 
 void TdmsReader::newChannel( TdmsChannel * channel ) {
-  output( ) << "new channel: " << channel->getName( ) << std::endl;
+  //output( ) << "new channel: " << channel->getName( ) << std::endl;
   std::string name = channel->getName( );
   name = name.substr( 2, name.length( ) - 3 );
 
