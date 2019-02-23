@@ -49,11 +49,11 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <standard>11</standard>
           <incDir>
             <pElem>include</pElem>
           </incDir>
-          <commandLine>-std=c++17</commandLine>
-          <warningLevel>2</warningLevel>
+          <commandLine>-g -O0 -D_XOPEN_SOURCE=700</commandLine>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.${CND_DLIB_EXT}</output>
@@ -63,6 +63,12 @@
         <packType>Tar</packType>
         <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libtdms.so.tar</output>
         <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
           <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}"
                             from="${OUTPUT_PATH}"
@@ -128,8 +134,7 @@
           <incDir>
             <pElem>include</pElem>
           </incDir>
-          <commandLine>-std=c++17</commandLine>
-          <warningLevel>2</warningLevel>
+          <commandLine>-O2 -D_XOPEN_SOURCE=700</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -145,6 +150,12 @@
         <packType>Tar</packType>
         <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libtdms.so.tar</output>
         <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="644"
+                            owner="root"
+                            group="bin"/>
           <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}"
                             from="${OUTPUT_PATH}"

@@ -42,7 +42,7 @@
           <incDir>
             <pElem>../Formats</pElem>
           </incDir>
-          <commandLine>-std=c++17</commandLine>
+          <commandLine>-std=c++17 -g</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>
         <fortranCompilerTool>
@@ -263,6 +263,24 @@
           <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
                             from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libFormats.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.dll"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libtdms.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
                             perm="755"
                             owner="root"
                             group="bin"/>
@@ -719,6 +737,24 @@
           <packFileListElem type="File"
                             to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
                             from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libFormats.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.dll"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/libtdms.dll"
+                            from="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}.exe"
+                            from="${OUTPUT_PATH}.exe"
                             perm="755"
                             owner="root"
                             group="bin"/>

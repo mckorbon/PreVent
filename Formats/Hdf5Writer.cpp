@@ -144,7 +144,7 @@ std::string Hdf5Writer::getDatasetName( const std::string& oldname ) {
   for ( auto&pr : replacements ) {
     size_t pos = name.find( pr.first );
     while ( std::string::npos != pos ) {
-      // Replace this occurrence of Sub String
+      // Replace this occurrence of substring
       name.replace( pos, pr.first.size( ), pr.second );
       // Get the next occurrence from the current position
       pos = name.find( pr.first, pos + pr.first.size( ) );
@@ -162,7 +162,7 @@ void Hdf5Writer::writeFileAttributes( H5::H5File file,
 
   for ( std::map<std::string, std::string>::const_iterator it = datasetattrs.begin( );
       it != datasetattrs.end( ); ++it ) {
-    //std::cout << "writing file attr: " << it->first << ": " << it->second << std::endl;
+    std::cout << "writing file attr: " << it->first << ": " << it->second << std::endl;
     if ( it->first == OffsetTimeSignalSet::COLLECTION_OFFSET ) {
       writeAttribute( file, it->first, std::stoi( it->second ) );
     }
