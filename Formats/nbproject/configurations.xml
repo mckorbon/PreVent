@@ -40,6 +40,7 @@
       <itemPath>DataRow.h</itemPath>
       <itemPath>FileNamer.h</itemPath>
       <itemPath>Formats.h</itemPath>
+      <itemPath>Options.h</itemPath>
       <itemPath>Reader.h</itemPath>
       <itemPath>SignalData.h</itemPath>
       <itemPath>SignalSet.h</itemPath>
@@ -88,6 +89,7 @@
       <itemPath>DataRow.cpp</itemPath>
       <itemPath>FileNamer.cpp</itemPath>
       <itemPath>Formats.cpp</itemPath>
+      <itemPath>Options.cpp</itemPath>
       <itemPath>Reader.cpp</itemPath>
       <itemPath>SignalData.cpp</itemPath>
       <itemPath>SignalSet.cpp</itemPath>
@@ -305,7 +307,7 @@
           <incDir>
             <pElem>../libtdms/include</pElem>
           </incDir>
-          <commandLine>-std=c++17</commandLine>
+          <commandLine>-Wno-deprecated `wfdb-config --cflags` -std=c++17</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>
         <fortranCompilerTool>

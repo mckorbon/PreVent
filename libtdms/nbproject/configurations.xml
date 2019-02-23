@@ -49,11 +49,11 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <standard>11</standard>
           <incDir>
             <pElem>include</pElem>
           </incDir>
-          <commandLine>-g -O0 -D_XOPEN_SOURCE=700</commandLine>
+          <commandLine>-O0 -std=c++17</commandLine>
+          <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
           <output>${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.${CND_DLIB_EXT}</output>
@@ -134,7 +134,8 @@
           <incDir>
             <pElem>include</pElem>
           </incDir>
-          <commandLine>-O2 -D_XOPEN_SOURCE=700</commandLine>
+          <commandLine>-std=c++17</commandLine>
+          <warningLevel>2</warningLevel>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>

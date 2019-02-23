@@ -73,8 +73,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-std=c++17
-CXXFLAGS=-std=c++17
+CCFLAGS=-Wno-deprecated `wfdb-config --cflags` -std=c++17 
+CXXFLAGS=-Wno-deprecated `wfdb-config --cflags` -std=c++17 
 
 # Fortran Compiler Flags
 FFLAGS=
