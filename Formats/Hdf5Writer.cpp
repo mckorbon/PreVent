@@ -162,7 +162,7 @@ void Hdf5Writer::writeFileAttributes( H5::H5File file,
 
   for ( std::map<std::string, std::string>::const_iterator it = datasetattrs.begin( );
       it != datasetattrs.end( ); ++it ) {
-    std::cout << "writing file attr: " << it->first << ": " << it->second << std::endl;
+    //std::cout << "writing file attr: " << it->first << ": " << it->second << std::endl;
     if ( it->first == OffsetTimeSignalSet::COLLECTION_OFFSET ) {
       writeAttribute( file, it->first, std::stoi( it->second ) );
     }
