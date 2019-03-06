@@ -32,6 +32,7 @@
 #include "FileNamer.h"
 #include "BasicSignalSet.h"
 #include "AnonymizingSignalSet.h"
+#include "AttributeUtils.h"
 
 void helpAndExit( char * progname, std::string msg = "" ) {
   std::cerr << msg << std::endl
@@ -40,13 +41,15 @@ void helpAndExit( char * progname, std::string msg = "" ) {
       << std::endl << "\t-m or --mrn <mrn>\tsets MRN in file"
       << std::endl << "\t-n or --name <patient name>\tsets name in file"
       << std::endl << "\t-o or --output <output file>"
-      << std::endl << "\t-A or --attr <key=value>\tsets the given attribute to the value"
+      << std::endl << "\t-S or --set-attr <key[:<i|s|d>]=value>\tsets the given attribute to the value"
       << std::endl << "\t-C or --clobber\toverwrite input file"
       << std::endl << "\t-c or --cat\tconcatenate files from command line, used with --output"
       << std::endl << "\t-s or --start <time>\tstart output from this UTC time (many time formats supported)"
       << std::endl << "\t-e or --end <time>\tstop output immediately before this UTC time (many time formats supported)"
       << std::endl << "\t-f or --for <s>\toutput this many seconds of data from the start of file (or --start)"
       << std::endl << "\t-a or --anonymize, --anon, or --anonymous"
+      << std::endl << "\t-p or --path\tsets the path for --set-attr and --attrs"
+      << std::endl << "\t-A or --attrs\tprints all attributes in the file"
       << std::endl;
   exit( 1 );
 }
@@ -56,12 +59,13 @@ struct option longopts[] = {
   { "name", required_argument, NULL, 'n' },
   { "clobber", no_argument, NULL, 'C' },
   { "output", required_argument, NULL, 'o' },
-  { "attr", required_argument, NULL, 'A' },
+  { "set-attr", required_argument, NULL, 'S' },
+  { "path", required_argument, NULL, 'p' },
+  { "attrs", optional_argument, NULL, 'A' },
   { "start", required_argument, NULL, 's' },
   { "end", required_argument, NULL, 'e' },
   { "for", required_argument, NULL, 'f' },
   { "anonymize", no_argument, NULL, 'a' },
-  { "anon", no_argument, NULL, 'a' },
   { "anonymous", no_argument, NULL, 'a' },
   { "cat", no_argument, NULL, 'c' }, // all remaining args are files
   { 0, 0, 0, 0 }
@@ -129,8 +133,10 @@ int main( int argc, char** argv ) {
   dr_time endtime = std::numeric_limits<dr_time>::max( );
   int for_s = -1;
   bool anon = false;
+  bool printattrs = false;
+  std::string path = "/";
 
-  while ( ( c = getopt_long( argc, argv, ":m:n:o:CA:c:s:e:f:a", longopts, NULL ) ) != -1 ) {
+  while ( ( c = getopt_long( argc, argv, ":m:n:o:CAc:s:e:f:aS:", longopts, NULL ) ) != -1 ) {
     switch ( c ) {
       case 'm':
         attrs["MRN"] = optarg;
@@ -141,7 +147,13 @@ int main( int argc, char** argv ) {
       case 'o':
         outfilename = optarg;
         break;
+      case 'p':
+        path = optarg;
+        break;
       case 'A':
+        printattrs = true;
+        break;
+      case 'S':
       {
         std::string kv( optarg );
         size_t idx = kv.find( '=' );
@@ -190,7 +202,25 @@ int main( int argc, char** argv ) {
     helpAndExit( argv[0], "no file specified" );
   }
 
-  if ( catfiles ) {
+  H5::Exception::dontPrint( );
+  if ( printattrs ) {
+    for ( int i = optind; i < argc; i++ ) {
+      try {
+        H5::H5File file = H5::H5File( argv[i], H5F_ACC_RDONLY );
+        AttributeUtils::printAttributes( file, path );
+      }
+      catch ( H5::FileIException error ) {
+        std::cerr << error.getDetailMsg( ) << std::endl;
+        return -1;
+      }
+      // catch failure caused by the DataSet operations
+      catch ( H5::DataSetIException error ) {
+        std::cerr << error.getDetailMsg( ) << std::endl;
+        return -2;
+      }
+    }
+  }
+  else if ( catfiles ) {
     std::vector<std::string> filesToCat;
 
     if ( outfilename.empty( ) ) {
@@ -268,35 +298,48 @@ int main( int argc, char** argv ) {
     std::cout << "yup...that's a file" << std::endl;
   }
   else { // write some attributes
-    std::unique_ptr<H5::H5File> infile;
-    std::unique_ptr<H5::H5File> outfile;
-    std::string infilename = argv[optind];
+    for ( int i = optind; i < argc; i++ ) {
+      std::string val;
+      std::string attrtype( "s" ); // just in case an exception gets thrown...
+      try {
+        H5::H5File file = H5::H5File( argv[i], H5F_ACC_RDWR );
+        for ( auto& x : attrs ) {
+          std::string key = x.first;
+          val = x.second;
 
-    if ( "" == outfilename ) {
-      // infile and outfile are the same
-      if ( clobber ) {
-        outfile.reset( new H5::H5File( infilename, H5F_ACC_RDWR ) );
+          size_t delim = key.find( ":" );
+
+          std::string attr( key );
+          if ( std::string::npos != delim ) {
+            attr = key.substr( 0, delim );
+            attrtype = key.substr( delim + 1 );
+          }
+
+          if ( "s" == attrtype ) {
+            AttributeUtils::setAttribute( file, path, attr, val );
+          }
+          else if ( "i" == attrtype ) {
+            AttributeUtils::setAttribute( file, path, attr, std::stoi( val ) );
+          }
+          else if ( "d" == attrtype ) {
+            AttributeUtils::setAttribute( file, path, attr, std::stod( val ) );
+          }
+        }
       }
-      else {
-        std::cerr << "will not overwrite " << infilename << " (use --clobber)" << std::endl;
-        exit( 1 );
+      catch ( H5::FileIException error ) {
+        std::cerr << error.getDetailMsg( ) << std::endl;
+        return -1;
+      }
+      // catch failure caused by the DataSet operations
+      catch ( H5::DataSetIException error ) {
+        std::cerr << error.getDetailMsg( ) << std::endl;
+        return -2;
+      }
+      catch ( std::invalid_argument error ) {
+        std::cerr << "could not convert \"" << val << "\" to appropriate datatype (" << attrtype << ")" << std::endl;
+        return -3;
       }
     }
-    else {
-      // if file exists,  worry about clobbering it
-      struct stat buffer;
-      if ( stat( outfilename.c_str( ), &buffer ) == 0 && !clobber ) {
-        std::cerr << "will not overwrite " << outfilename << " (use --clobber)" << std::endl;
-        exit( 1 );
-      }
-
-      infile.reset( new H5::H5File( infilename, H5F_ACC_RDONLY ) );
-      outfile.reset( new H5::H5File( outfilename, H5F_ACC_TRUNC ) );
-      cloneFile( infile, outfile );
-    }
-
-    writeAttrs( outfile, attrs );
-    outfile->close( );
   }
 
   return 0;
