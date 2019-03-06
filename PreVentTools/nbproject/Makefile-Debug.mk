@@ -46,8 +46,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-Wno-deprecated -O0 -pg -g
-CXXFLAGS=-Wno-deprecated -O0 -pg -g
+CCFLAGS=-Wno-deprecated -O0 -std=c++17
+CXXFLAGS=-Wno-deprecated -O0 -std=c++17
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -56,15 +56,11 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`pkg-config --libs zlib` /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so -L../Formats/dist/Debug/Cygwin-Windows -lFormats -L../libtdms/dist/Debug/Cygwin-Windows -ltdms  
+LDLIBSOPTIONS=-L../Formats/dist/Debug/Cygwin-Windows -lFormats -L../libtdms/dist/Debug/Cygwin-Windows -ltdms
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe
-
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so
-
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: ../Formats/dist/Debug/Cygwin-Windows/libFormats.dll
 
@@ -77,27 +73,27 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: ${OBJECTFILES}
 ${OBJECTDIR}/AttributeUtils.o: AttributeUtils.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats `pkg-config --cflags zlib` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AttributeUtils.o AttributeUtils.cpp
+	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AttributeUtils.o AttributeUtils.cpp
 
 ${OBJECTDIR}/ClippingSignalSet.o: ClippingSignalSet.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats `pkg-config --cflags zlib` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClippingSignalSet.o ClippingSignalSet.cpp
+	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClippingSignalSet.o ClippingSignalSet.cpp
 
 ${OBJECTDIR}/H5Cat.o: H5Cat.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats `pkg-config --cflags zlib` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/H5Cat.o H5Cat.cpp
+	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/H5Cat.o H5Cat.cpp
 
 ${OBJECTDIR}/TimeParser.o: TimeParser.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats `pkg-config --cflags zlib` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeParser.o TimeParser.cpp
+	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeParser.o TimeParser.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats `pkg-config --cflags zlib` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:
@@ -107,7 +103,7 @@ ${OBJECTDIR}/main.o: main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libhdf5.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libhdf5_cpp.so ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll
+	${RM} -r ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libFormats.dll ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtdms.dll
 	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe
 
 # Subprojects

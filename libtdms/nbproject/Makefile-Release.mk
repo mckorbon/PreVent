@@ -47,8 +47,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-std=c++17 -02
-CXXFLAGS=-std=c++17 -O2
+CCFLAGS=-std=c++17
+CXXFLAGS=-std=c++17
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -75,27 +75,27 @@ ${OBJECTDIR}/TdmsChannel.o: TdmsChannel.cpp
 ${OBJECTDIR}/TdmsGroup.o: TdmsGroup.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -Iinclude -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsGroup.o TdmsGroup.cpp
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsGroup.o TdmsGroup.cpp
 
 ${OBJECTDIR}/TdmsLeadIn.o: TdmsLeadIn.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -Iinclude -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsLeadIn.o TdmsLeadIn.cpp
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsLeadIn.o TdmsLeadIn.cpp
 
 ${OBJECTDIR}/TdmsMetaData.o: TdmsMetaData.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -Iinclude -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsMetaData.o TdmsMetaData.cpp
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsMetaData.o TdmsMetaData.cpp
 
 ${OBJECTDIR}/TdmsObject.o: TdmsObject.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -Iinclude -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsObject.o TdmsObject.cpp
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsObject.o TdmsObject.cpp
 
 ${OBJECTDIR}/TdmsParser.o: TdmsParser.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -Iinclude -fPIC  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsParser.o TdmsParser.cpp
+	$(COMPILE.cc) -O2 -Wall -s -Iinclude  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TdmsParser.o TdmsParser.cpp
 
 # Subprojects
 .build-subprojects:

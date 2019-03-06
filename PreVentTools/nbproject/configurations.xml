@@ -44,18 +44,14 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <standard>11</standard>
           <commandlineTool>h5c++</commandlineTool>
           <incDir>
             <pElem>../Formats</pElem>
           </incDir>
-          <commandLine>-Wno-deprecated -O0 -pg -g</commandLine>
+          <commandLine>-Wno-deprecated -O0 -std=c++17</commandLine>
         </ccTool>
         <linkerTool>
           <linkerLibItems>
-            <linkerOptionItem>`pkg-config --libs zlib`</linkerOptionItem>
-            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so</linkerLibFileItem>
-            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so</linkerLibFileItem>
             <linkerLibProjectItem>
               <makeArtifact PL="../Formats"
                             CT="2"
@@ -114,12 +110,13 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <standard>11</standard>
+          <stripSymbols>true</stripSymbols>
           <commandlineTool>h5c++</commandlineTool>
           <incDir>
             <pElem>../Formats</pElem>
           </incDir>
-          <commandLine>-Wno-deprecated</commandLine>
+          <commandLine>-Wno-deprecated -O0 -std=c++17</commandLine>
+          <warningLevel>2</warningLevel>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -129,9 +126,6 @@
         </asmTool>
         <linkerTool>
           <linkerLibItems>
-            <linkerOptionItem>`pkg-config --libs zlib`</linkerOptionItem>
-            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so</linkerLibFileItem>
-            <linkerLibFileItem>/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so</linkerLibFileItem>
             <linkerLibProjectItem>
               <makeArtifact PL="../Formats"
                             CT="2"
