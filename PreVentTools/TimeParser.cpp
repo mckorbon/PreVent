@@ -30,10 +30,11 @@ dr_time TimeParser::parse( const std::string& timestr ) {
     "%m/%d/%y", // 6/15/75
   };
 
-  tm tm = { };
+  tm tm = {};
   for ( auto& fmt : formats ) {
+    // not sure what this will do on failure
     Reader::strptime2( timestr.c_str( ), fmt.c_str( ), &tm );
-      // now convert our local time to UTC
+    // now convert our local time to UTC
     time_t gmt = timegm( &tm );
     return gmt * 1000; // convert seconds to ms
   }
