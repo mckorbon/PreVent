@@ -78,7 +78,7 @@ ${OBJECTDIR}/AttributeUtils.o: AttributeUtils.cpp
 ${OBJECTDIR}/ClippingSignalSet.o: ClippingSignalSet.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Wall -s -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClippingSignalSet.o ClippingSignalSet.cpp
+	$(COMPILE.cc) -O2 -Wall -I../Formats `pkg-config --cflags zlib`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClippingSignalSet.o ClippingSignalSet.cpp
 
 ${OBJECTDIR}/H5Cat.o: H5Cat.cpp
 	${MKDIR} -p ${OBJECTDIR}
