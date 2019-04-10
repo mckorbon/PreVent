@@ -61,7 +61,7 @@
           <incDir>
             <pElem>../Formats</pElem>
           </incDir>
-          <commandLine>-Wno-deprecated -Og -pg -g -std=c++17</commandLine>
+          <commandLine>-Wno-deprecated -Og -pg -g -std=c++17 -fPIC</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
