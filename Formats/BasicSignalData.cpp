@@ -142,7 +142,7 @@ void BasicSignalData::cache( ) {
     std::unique_ptr<DataRow> a = std::move( data.front( ) );
     data.pop_front( );
 
-    ss << a->time << " " << a->data << " " << a->high << " " << a->low << " ";
+    ss << a->time << " " << a->data << " ";
     if ( !a->extras.empty( ) ) {
       for ( const auto& x : a->extras ) {
         ss << "|" << x.first << "=" << x.second;
@@ -226,13 +226,9 @@ int BasicSignalData::uncache( int max ) {
     std::stringstream ss( read );
     dr_time t;
     std::string val;
-    std::string high;
-    std::string low;
 
     ss >> t;
     ss >> val;
-    ss >> high;
-    ss >> low;
 
     std::map<std::string, std::string> attrs;
     if ( !extras.empty( ) ) {
@@ -255,7 +251,7 @@ int BasicSignalData::uncache( int max ) {
     }
 
 
-    data.push_back( std::unique_ptr<DataRow>( new DataRow( t, val, high, low, attrs ) ) );
+    data.push_back( std::unique_ptr<DataRow>( new DataRow( t, val, attrs ) ) );
     loop++;
   }
 

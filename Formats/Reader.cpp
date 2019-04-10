@@ -93,8 +93,13 @@ bool Reader::getAttributes( const std::string& inputfile, std::map<std::string, 
   return false;
 }
 
+void Reader::splice( const std::string& inputfile, const std::string& path,
+    dr_time from, dr_time to, std::unique_ptr<SignalData>& signal ) {
+  std::cerr << "this reader does not support splicing" << std::endl;
+}
+
 void Reader::strptime2( const std::string& input, const std::string& format,
     std::tm * tm ) {
   std::istringstream iss( input );
-  iss >> std::get_time( tm, format.c_str() );
+  iss >> std::get_time( tm, format.c_str( ) );
 }

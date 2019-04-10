@@ -18,11 +18,13 @@
 #include <iostream>
 #include <getopt.h>
 #include <sys/stat.h>
+#include <fstream>
 
 #include <H5Cpp.h>
 #include <H5Opublic.h>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 #include "H5Cat.h"
 #include "dr_time.h"
@@ -33,6 +35,7 @@
 #include "BasicSignalSet.h"
 #include "AnonymizingSignalSet.h"
 #include "AttributeUtils.h"
+#include "OutputSignalData.h"
 
 void helpAndExit( char * progname, std::string msg = "" ) {
   std::cerr << msg << std::endl
@@ -47,6 +50,7 @@ void helpAndExit( char * progname, std::string msg = "" ) {
       << std::endl << "\t-f or --for <s>\toutput this many seconds of data from the start of file (or --start)"
       << std::endl << "\t-a or --anonymize, --anon, or --anonymous"
       << std::endl << "\t-p or --path\tsets the path for --set-attr and --attrs"
+      << std::endl << "\t-d or --print\tprints data from the path given with --path"
       << std::endl << "\t-A or --attrs\tprints all attributes in the file"
       << std::endl;
   exit( 1 );
@@ -63,6 +67,7 @@ struct option longopts[] = {
   { "for", required_argument, NULL, 'f' },
   { "anonymize", no_argument, NULL, 'a' },
   { "anonymous", no_argument, NULL, 'a' },
+  { "print", no_argument, NULL, 'd' },
   { "cat", no_argument, NULL, 'c' }, // all remaining args are files
   { 0, 0, 0, 0 }
 };
@@ -77,7 +82,7 @@ void cloneFile( std::unique_ptr<H5::H5File>&infile,
         ocpypl_id, H5P_DEFAULT );
   }
 
-  for ( hsize_t i = 0; i < infile->getNumAttrs( ); i++ ) {
+  for ( int i = 0; i < infile->getNumAttrs( ); i++ ) {
     H5::Attribute attr = infile->openAttribute( i );
     H5::DataSpace space = H5::DataSpace( H5S_SCALAR );
     H5::DataType dt = attr.getDataType( );
@@ -131,14 +136,18 @@ int main( int argc, char** argv ) {
   bool anon = false;
   bool printattrs = false;
   std::string path = "/";
+  bool print = false;
 
-  while ( ( c = getopt_long( argc, argv, ":o:CAc:s:e:f:aS:", longopts, NULL ) ) != -1 ) {
+  while ( ( c = getopt_long( argc, argv, ":o:CAc:s:e:f:aS:dp:", longopts, NULL ) ) != -1 ) {
     switch ( c ) {
       case 'o':
         outfilename = optarg;
         break;
       case 'p':
         path = optarg;
+        break;
+      case'd':
+        print = true;
         break;
       case 'A':
         printattrs = true;
@@ -192,6 +201,7 @@ int main( int argc, char** argv ) {
     helpAndExit( argv[0], "no file specified" );
   }
 
+  // just in case an exception gets thrown...
   H5::Exception::dontPrint( );
   if ( printattrs ) {
     for ( int i = optind; i < argc; i++ ) {
@@ -282,15 +292,11 @@ int main( int argc, char** argv ) {
       }
     }
   }
-  else if ( attrs.empty( ) ) {
-    // something to acknowledge the program did something
-    // (even if the user didn't ask us to do anything)
-    std::cout << "yup...that's a file" << std::endl;
-  }
-  else { // write some attributes
+  else if ( !attrs.empty( ) ) {
+    // write some attributes to screen
     for ( int i = optind; i < argc; i++ ) {
       std::string val;
-      std::string attrtype( "s" ); // just in case an exception gets thrown...
+      std::string attrtype( "s" );
       try {
         H5::H5File file = H5::H5File( argv[i], H5F_ACC_RDWR );
         for ( auto& x : attrs ) {
@@ -330,6 +336,45 @@ int main( int argc, char** argv ) {
         return -3;
       }
     }
+  }
+  else if ( print ) {
+    for ( int i = optind; i < argc; i++ ) {
+      std::string input = argv[i];
+
+      std::ostream& outstream = ( outfilename.empty( )
+          ? std::cout
+          : *( new std::ofstream( outfilename ) ) );
+      std::unique_ptr<SignalData> signal( new OutputSignalData( outstream ) );
+
+      Format fmt = Formats::guess( input );
+      std::unique_ptr<Reader> rdr = Reader::get( fmt );
+      rdr->splice( input, path, starttime, endtime, signal );
+
+//      int period = signal->chunkInterval( );
+//      int mspervalue = period / signal->readingsPerSample( );
+//      int scale = signal->scale( );
+//      double scalefector = std::pow( 10, scale );
+//
+//      while ( !signal->empty( ) ) {
+//        std::unique_ptr<DataRow> row = signal->pop( );
+//        std::vector<int> vals = row->ints( signal->scale( ) );
+//
+//        dr_time time = row->time;
+//        for ( auto x : vals ) {
+//          outstream << time << " " << SignalUtils::tosmallstring( (double) x, scalefector ) << std::endl;
+//          time += mspervalue;
+//        }
+//      }
+
+      if( !outfilename.empty()){
+        delete &outstream;
+      }
+    }
+  }
+  else {
+    // something to acknowledge the program did something
+    // (even if the user didn't ask us to do anything)
+    std::cout << "yup...that's a file" << std::endl;
   }
 
   return 0;

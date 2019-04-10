@@ -46,8 +46,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-Wno-deprecated -O0 -std=c++17
-CXXFLAGS=-Wno-deprecated -O0 -std=c++17
+CCFLAGS=-Wno-deprecated -Og -pg -g -std=c++17
+CXXFLAGS=-Wno-deprecated -Og -pg -g -std=c++17
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -73,27 +73,27 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/preventtools.exe: ${OBJECTFILES}
 ${OBJECTDIR}/AttributeUtils.o: AttributeUtils.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AttributeUtils.o AttributeUtils.cpp
+	$(COMPILE.cc) -g -Wall -I../Formats `pkg-config --cflags zlib`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AttributeUtils.o AttributeUtils.cpp
 
 ${OBJECTDIR}/ClippingSignalSet.o: ClippingSignalSet.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClippingSignalSet.o ClippingSignalSet.cpp
+	$(COMPILE.cc) -g -Wall -I../Formats `pkg-config --cflags zlib`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ClippingSignalSet.o ClippingSignalSet.cpp
 
 ${OBJECTDIR}/H5Cat.o: H5Cat.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/H5Cat.o H5Cat.cpp
+	$(COMPILE.cc) -g -Wall -I../Formats `pkg-config --cflags zlib`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/H5Cat.o H5Cat.cpp
 
 ${OBJECTDIR}/TimeParser.o: TimeParser.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeParser.o TimeParser.cpp
+	$(COMPILE.cc) -g -Wall -I../Formats `pkg-config --cflags zlib`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TimeParser.o TimeParser.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -Wall -I../Formats `pkg-config --cflags zlib`   -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

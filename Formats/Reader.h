@@ -70,7 +70,6 @@ public:
   static void strptime2( const std::string& input, const std::string& format,
       std::tm * tm );
 
-
   /**
    * Gets root attributes from the given input. If this can be accomplished
    * without reading the whole file, do it. else set the ok parameter to false
@@ -79,6 +78,19 @@ public:
    * @return true, if the read occurred
    */
   virtual bool getAttributes( const std::string& inputfile, std::map<std::string, std::string>& map );
+
+	/**
+	 * Reads any data available in the given file between the given dates for the
+	 * given signal, and writes it to the given SignalData. This function will
+	 * set any properties in the SignalData to match the data.
+	 * @param inputfile
+	 * @param path
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+  virtual void splice( const std::string& inputfile, const std::string& path,
+      dr_time from, dr_time to, std::unique_ptr<SignalData>& signalToFill );
 
 protected:
   Reader( const Reader& );
