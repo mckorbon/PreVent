@@ -41,8 +41,8 @@ public:
    * @param to
    * @return
    */
-  virtual std::unique_ptr<SignalData> splice( const std::string& inputfile,
-      const std::string& path, dr_time from, dr_time to ) override;
+  virtual void splice( const std::string& inputfile, const std::string& path,
+			dr_time from, dr_time to, std::unique_ptr<SignalData>& signal ) override;
 
 private:
   Hdf5Reader( const Hdf5Reader& );
@@ -79,9 +79,10 @@ private:
    * not exist in the dataset, return the index where it *would* be if it existed
    * @param haystack
    * @param needle
+   * @param foundtime the time that was found at the returned index
    * @return 
    */
-  static hsize_t getIndexForTime( H5::DataSet& haystack, dr_time needle, bool * found = nullptr );
+  static hsize_t getIndexForTime( H5::DataSet& haystack, dr_time needle, dr_time * foundtime = nullptr );
 
   /**
    * Reads (as ints) the given dataset from start (inclusive) to end (exclusive)

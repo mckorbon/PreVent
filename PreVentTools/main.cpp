@@ -18,11 +18,13 @@
 #include <iostream>
 #include <getopt.h>
 #include <sys/stat.h>
+#include <fstream>
 
 #include <H5Cpp.h>
 #include <H5Opublic.h>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 #include "H5Cat.h"
 #include "dr_time.h"
@@ -33,6 +35,7 @@
 #include "BasicSignalSet.h"
 #include "AnonymizingSignalSet.h"
 #include "AttributeUtils.h"
+#include "OutputSignalData.h"
 
 void helpAndExit( char * progname, std::string msg = "" ) {
   std::cerr << msg << std::endl
@@ -79,7 +82,7 @@ void cloneFile( std::unique_ptr<H5::H5File>&infile,
         ocpypl_id, H5P_DEFAULT );
   }
 
-  for ( hsize_t i = 0; i < infile->getNumAttrs( ); i++ ) {
+  for ( int i = 0; i < infile->getNumAttrs( ); i++ ) {
     H5::Attribute attr = infile->openAttribute( i );
     H5::DataSpace space = H5::DataSpace( H5S_SCALAR );
     H5::DataType dt = attr.getDataType( );
@@ -337,9 +340,35 @@ int main( int argc, char** argv ) {
   else if ( print ) {
     for ( int i = optind; i < argc; i++ ) {
       std::string input = argv[i];
+
+      std::ostream& outstream = ( outfilename.empty( )
+          ? std::cout
+          : *( new std::ofstream( outfilename ) ) );
+      std::unique_ptr<SignalData> signal( new OutputSignalData( outstream ) );
+
       Format fmt = Formats::guess( input );
-      std::unique_ptr<Reader> rdr = Reader::get(fmt);
-      std::unique_ptr<SignalData> signal = rdr->splice( input, path, starttime, endtime );
+      std::unique_ptr<Reader> rdr = Reader::get( fmt );
+      rdr->splice( input, path, starttime, endtime, signal );
+
+//      int period = signal->chunkInterval( );
+//      int mspervalue = period / signal->readingsPerSample( );
+//      int scale = signal->scale( );
+//      double scalefector = std::pow( 10, scale );
+//
+//      while ( !signal->empty( ) ) {
+//        std::unique_ptr<DataRow> row = signal->pop( );
+//        std::vector<int> vals = row->ints( signal->scale( ) );
+//
+//        dr_time time = row->time;
+//        for ( auto x : vals ) {
+//          outstream << time << " " << SignalUtils::tosmallstring( (double) x, scalefector ) << std::endl;
+//          time += mspervalue;
+//        }
+//      }
+
+      if( !outfilename.empty()){
+        delete &outstream;
+      }
     }
   }
   else {

@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/AttributeUtils.o \
 	${OBJECTDIR}/ClippingSignalSet.o \
 	${OBJECTDIR}/H5Cat.o \
+	${OBJECTDIR}/OutputSignalData.o \
 	${OBJECTDIR}/TimeParser.o \
 	${OBJECTDIR}/main.o
 
@@ -46,8 +47,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-Wno-deprecated -O0 -std=c++17
-CXXFLAGS=-Wno-deprecated -O0 -std=c++17
+CCFLAGS=-Wno-deprecated -Og -std=c++17
+CXXFLAGS=-Wno-deprecated -Og -std=c++17
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -84,6 +85,11 @@ ${OBJECTDIR}/H5Cat.o: H5Cat.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Wall -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/H5Cat.o H5Cat.cpp
+
+${OBJECTDIR}/OutputSignalData.o: OutputSignalData.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Wall -I../Formats -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/OutputSignalData.o OutputSignalData.cpp
 
 ${OBJECTDIR}/TimeParser.o: TimeParser.cpp
 	${MKDIR} -p ${OBJECTDIR}
