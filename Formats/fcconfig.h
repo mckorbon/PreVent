@@ -11,8 +11,8 @@
  * Created on August 11, 2016, 7:35 AM
  */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef FC_CONFIG_H
+#define FC_CONFIG_H
 
 const char dirsep =
 #ifdef __linux__
@@ -45,5 +45,5 @@ const int FC_VERS_MAJOR = 4;
 const int FC_VERS_MINOR = 0;
 const int FC_VERS_MICRO = 9;
 
-#endif /* CONFIG_H */
+#endif /* FC_CONFIG_H */
 

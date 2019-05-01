@@ -6,7 +6,7 @@
 
 #include "FileNamer.h"
 #include "SignalSet.h"
-#include "config.h"
+#include "fcconfig.h"
 #include <sys/stat.h>
 #include <experimental/filesystem>
 #include <iostream>

@@ -15,7 +15,7 @@
 #include "SignalSet.h"
 #include "SignalData.h"
 #include "SignalUtils.h"
-#include "config.h"
+#include "fcconfig.h"
 #include "FileNamer.h"
 
 WfdbWriter::WfdbWriter( ) : Writer( "hea" ) {

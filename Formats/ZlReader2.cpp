@@ -24,7 +24,7 @@
 #include <sstream>
 #include <sys/stat.h>
 #include <experimental/filesystem>
-#include "config.h"
+#include "fcconfig.h"
 #include "json.hpp"
 
 #if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(__CYGWIN__)

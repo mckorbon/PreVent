@@ -93,6 +93,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
 	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
 	$(top_srcdir)/m4/ax_cxx_compile_stdcxx.m4 \
+	$(top_srcdir)/m4/libuv-check-flags.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
@@ -242,8 +243,8 @@ ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
+GIT_CHECK = @GIT_CHECK@
 GREP = @GREP@
-HAVE_CXX17 = @HAVE_CXX17@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -348,12 +349,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 zlib_CFLAGS = @zlib_CFLAGS@
 zlib_LIBS = @zlib_LIBS@
-SUBDIRS = libtdms Formats PreVentTools# FormatConverter
+SUBDIRS = libtdms Formats PreVentTools FormatConverter
 ACLOCAL_AMFLAGS = -I m4
-@DEBUG_FALSE@AM_CFLAGS = -O2
-@DEBUG_TRUE@AM_CFLAGS = -g3 -Og
-@DEBUG_FALSE@AM_CXXFLAGS = -O2
-@DEBUG_TRUE@AM_CXXFLAGS = -g3 -Og
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

@@ -1,4 +1,9 @@
-/FormatConverter/build/
-/FormatConverter/dist/
-/PreVentTools/build/
-/PreVentTools/dist/
+*.o
+*.lo
+.deps
+.libs
+FormatConverter/uva-sample-complete/
+FormatConverter/uva-sample/
+autom4te.cache/
+build-aux/
+config.h.in~

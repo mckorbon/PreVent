@@ -18,7 +18,7 @@
 #include "DataRow.h"
 #include "BasicSignalSet.h"
 #include "Db.h"
-#include "config.h"
+#include "fcconfig.h"
 #include "FileNamer.h"
 #include "TimezoneOffsetTimeSignalSet.h"
 #include "AnonymizingSignalSet.h"

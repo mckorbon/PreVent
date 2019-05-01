@@ -3,9 +3,6 @@
 /* Define to 1 if you have the `alarm' function. */
 #undef HAVE_ALARM
 
-/* define if the compiler supports basic C++17 syntax */
-#undef HAVE_CXX17
-
 /* Define to 1 if you have the declaration of `tzname', and to 0 if you don't.
    */
 #undef HAVE_DECL_TZNAME

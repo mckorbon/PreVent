@@ -40,7 +40,7 @@ include_HEADERS =	AnonymizingSignalSet.h \
 	BasicSignalData.h \
 	BasicSignalSet.h \
 	build.h \
-	config.h \
+	fcconfig.h \
 	ConversionListener.h \
 	CpcXmlReader.h \
 	CsvWriter.h \
@@ -74,8 +74,17 @@ include_HEADERS =	AnonymizingSignalSet.h \
 	ZlReader2.h \
 	ZlReader.h
 
-AM_CXXFLAGS = -std=c++17 -I../libtdms/include @WFDB_CFLAGS@
+AM_CXXFLAGS = -I../libtdms/include @WFDB_CFLAGS@
 
 ACLOCAL_AMFLAGS = -I m4
 
 AM_LDFLAGS=-L../libtdms/.libs -ltdms @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs #/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
+
+CLEANFILES = build.h
+
+GIT_VERSION = `git describe --abbrev=8 --dirty --always --tags`
+
+build.h : Makefile
+	echo "#ifndef GIT_BUILD " > build.h
+	echo "#define GIT_BUILD \"${GIT_VERSION}\"">>build.h
+	echo "#endif" >> build.h

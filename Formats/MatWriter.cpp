@@ -14,7 +14,7 @@
 #include <iomanip>
 #include <vector>
 
-#include "config.h"
+#include "fcconfig.h"
 #include "SignalSet.h"
 #include "SignalData.h"
 #include "SignalUtils.h"

@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "Reader.h"
-#include "config.h"
+#include "fcconfig.h"
 #include "Hdf5Writer.h"
 #include "WfdbWriter.h"
 #include "MatWriter.h"
