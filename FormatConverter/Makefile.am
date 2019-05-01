@@ -8,5 +8,6 @@ AM_CXXFLAGS = -I../libtdms/include -I../Formats @zlib_CFLAGS@ @expat_CFLAGS@ @WF
 
 ACLOCAL_AMFLAGS = -I m4
 
-AM_LDFLAGS=-L../libtdms/.libs -ltdms -L../Formats/.libs -lFormats @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
+AM_LDFLAGS=-L../libtdms/.libs -ltdms -L../Formats/.libs -lFormats @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs
+#/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
 

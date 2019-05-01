@@ -78,11 +78,14 @@ AM_CXXFLAGS = -I../libtdms/include @WFDB_CFLAGS@
 
 ACLOCAL_AMFLAGS = -I m4
 
-AM_LDFLAGS=-L../libtdms/.libs -ltdms @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs #/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
+AM_LDFLAGS=-L../libtdms/.libs -ltdms @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs
+#/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
 
 CLEANFILES = build.h
 
 GIT_VERSION = `git describe --abbrev=8 --dirty --always --tags`
+
+BUILT_SOURCES = build.h
 
 build.h : Makefile
 	echo "#ifndef GIT_BUILD " > build.h

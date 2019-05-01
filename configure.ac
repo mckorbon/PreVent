@@ -11,7 +11,7 @@ AM_PROG_AR
 AC_PROG_LIBTOOL
 
 AM_INIT_AUTOMAKE([-Wall])
-LT_INIT
+LT_INIT([disable-static])
 
 # Checks for programs.
 AC_LANG(C++)
