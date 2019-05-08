@@ -209,6 +209,8 @@ EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GIT_CHECK = @GIT_CHECK@
 GREP = @GREP@
+HDF5_CHECK = @HDF5_CHECK@
+HDF5_LIBS = @HDF5_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -305,6 +307,8 @@ psdir = @psdir@
 runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
+sqlite3_CFLAGS = @sqlite3_CFLAGS@
+sqlite3_LIBS = @sqlite3_LIBS@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
@@ -314,9 +318,9 @@ top_srcdir = @top_srcdir@
 zlib_CFLAGS = @zlib_CFLAGS@
 zlib_LIBS = @zlib_LIBS@
 preventtools_SOURCES = AttributeUtils.cpp  ClippingSignalSet.cpp  H5Cat.cpp  main.cpp  OutputSignalData.cpp  TimeParser.cpp
-AM_CXXFLAGS = -I../libtdms/include -I../Formats @zlib_CFLAGS@ @expat_CFLAGS@ @WFDB_CFLAGS@
+AM_CXXFLAGS = -shlib -I../libtdms/include -I../Formats @zlib_CFLAGS@ @expat_CFLAGS@ @WFDB_CFLAGS@
 ACLOCAL_AMFLAGS = -I m4
-AM_LDFLAGS = -L../libtdms/.libs -ltdms -L../Formats/.libs -lFormats @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
+AM_LDFLAGS = -L../libtdms/.libs -ltdms -L../Formats/.libs -lFormats @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs -lhdf5 -lhdf5_cpp 
 all: all-am
 
 .SUFFIXES:
@@ -651,6 +655,7 @@ uninstall-am: uninstall-binPROGRAMS
 
 .PRECIOUS: Makefile
 
+#/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

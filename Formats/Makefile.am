@@ -74,12 +74,11 @@ include_HEADERS =	AnonymizingSignalSet.h \
 	ZlReader2.h \
 	ZlReader.h
 
-AM_CXXFLAGS = -I../libtdms/include @WFDB_CFLAGS@
+AM_CXXFLAGS = -shlib -I../libtdms/include @WFDB_CFLAGS@
 
 ACLOCAL_AMFLAGS = -I m4
 
-AM_LDFLAGS=-L../libtdms/.libs -ltdms @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs
-#/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
+AM_LDFLAGS=-L../libtdms/.libs -ltdms @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs -lhdf5_cpp
 
 CLEANFILES = build.h
 

@@ -636,6 +636,8 @@ ac_func_list=
 ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
+sqlite3_LIBS
+sqlite3_CFLAGS
 expat_LIBS
 expat_CFLAGS
 matio_LIBS
@@ -649,10 +651,12 @@ DEBUG_FALSE
 DEBUG_TRUE
 POW_LIB
 LIBOBJS
+HDF5_LIBS
 GIT_CHECK
 WFDB_CFLAGS
 WFDB_LIBS
 WFDB_CHECK
+HDF5_CHECK
 am__fastdepCXX_FALSE
 am__fastdepCXX_TRUE
 CXXDEPMODE
@@ -810,7 +814,9 @@ zlib_LIBS
 matio_CFLAGS
 matio_LIBS
 expat_CFLAGS
-expat_LIBS'
+expat_LIBS
+sqlite3_CFLAGS
+sqlite3_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1491,6 +1497,10 @@ Some influential environment variables:
   expat_CFLAGS
               C compiler flags for expat, overriding pkg-config
   expat_LIBS  linker flags for expat, overriding pkg-config
+  sqlite3_CFLAGS
+              C compiler flags for sqlite3, overriding pkg-config
+  sqlite3_LIBS
+              linker flags for sqlite3, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -17265,49 +17275,47 @@ fi
   done
 
 
-  for flag in -Wextra; do
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking if $CC supports $flag flag" >&5
-$as_echo_n "checking if $CC supports $flag flag... " >&6; }
-if { as_var=`$as_echo "cc_cv_cflags_$flag" | $as_tr_sh`; eval \${$as_var+:} false; }; then :
+# HDF5 compiler
+# Extract the first word of "h5c++", so it can be a program name with args.
+set dummy h5c++; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_prog_HDF5_CHECK+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-
-  if { as_var=`$as_echo "cc_cv_cflags_$flag" | $as_tr_sh`; eval \${$as_var+:} false; }; then :
-  $as_echo_n "(cached) " >&6
+  if test -n "$HDF5_CHECK"; then
+  ac_cv_prog_HDF5_CHECK="$HDF5_CHECK" # Let the user override the test.
 else
-  ac_save_CXXFLAGS="$CXXFLAGS"
-     CXXFLAGS="$CXXFLAGS $flag"
-     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-int a;
-_ACEOF
-if ac_fn_cxx_try_compile "$LINENO"; then :
-  eval "`$as_echo "cc_cv_cflags_$flag" | $as_tr_sh`='yes'"
-else
-  eval "`$as_echo "cc_cv_cflags_$flag" | $as_tr_sh`='no'"
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-     CXXFLAGS="$ac_save_CXXFLAGS"
-
-fi
-
-
-  if eval test x$`$as_echo "cc_cv_cflags_$flag" | $as_tr_sh` = xyes; then :
-
-fi
-
-fi
-eval ac_res=\$`$as_echo "cc_cv_cflags_$flag" | $as_tr_sh`
-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-
-  if eval test x$`$as_echo "cc_cv_cflags_$flag" | $as_tr_sh` = xyes; then :
-  CXXFLAGS="$CXXFLAGS $flag"; DEBUG_CXXFLAGS="$DEBUG_CXXFLAGS $flag";
-fi
-
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_HDF5_CHECK="yes"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
   done
+IFS=$as_save_IFS
 
+fi
+fi
+HDF5_CHECK=$ac_cv_prog_HDF5_CHECK
+if test -n "$HDF5_CHECK"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $HDF5_CHECK" >&5
+$as_echo "$HDF5_CHECK" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+if test x"$HDF5_CHECK" != x"yes"; then :
+  as_fn_error $? "Please install HDF5 (h5c++) before configuring" "$LINENO" 5
+fi
 
 # check for WFDB library
 # Extract the first word of "wfdb-config", so it can be a program name with args.
@@ -17397,6 +17405,7 @@ if test x"$GIT_CHECK" != x"yes"; then :
 fi
 
 # Checks for libraries.
+
 
 # Checks for header files.
 
@@ -18590,6 +18599,97 @@ See \`config.log' for more details" "$LINENO" 5; }
 else
 	expat_CFLAGS=$pkg_cv_expat_CFLAGS
 	expat_LIBS=$pkg_cv_expat_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+fi
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sqlite3" >&5
+$as_echo_n "checking for sqlite3... " >&6; }
+
+if test -n "$sqlite3_CFLAGS"; then
+    pkg_cv_sqlite3_CFLAGS="$sqlite3_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"sqlite3\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "sqlite3") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_sqlite3_CFLAGS=`$PKG_CONFIG --cflags "sqlite3" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$sqlite3_LIBS"; then
+    pkg_cv_sqlite3_LIBS="$sqlite3_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"sqlite3\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "sqlite3") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_sqlite3_LIBS=`$PKG_CONFIG --libs "sqlite3" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        sqlite3_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "sqlite3" 2>&1`
+        else
+	        sqlite3_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "sqlite3" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$sqlite3_PKG_ERRORS" >&5
+
+	as_fn_error $? "Package requirements (sqlite3) were not met:
+
+$sqlite3_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables sqlite3_CFLAGS
+and sqlite3_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details." "$LINENO" 5
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables sqlite3_CFLAGS
+and sqlite3_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details" "$LINENO" 5; }
+else
+	sqlite3_CFLAGS=$pkg_cv_sqlite3_CFLAGS
+	sqlite3_LIBS=$pkg_cv_sqlite3_LIBS
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 

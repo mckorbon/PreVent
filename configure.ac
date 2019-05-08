@@ -23,7 +23,11 @@ m4_include([m4/libuv-check-flags.m4])
 dnl AX_CXX_COMPILE_STDCXX(17, [noext], [mandatory])
 CC_CHECK_CXXFLAGS_APPEND([-std=c++17])
 CC_CHECK_CXXFLAGS_APPEND([-Wall])
-CC_CHECK_CXXFLAGS_APPEND([-Wextra])
+dnl CC_CHECK_CXXFLAGS_APPEND([-Wextra])
+
+# HDF5 compiler
+AC_CHECK_PROG([HDF5_CHECK],[h5c++], [yes])
+AS_IF([test x"$HDF5_CHECK" != x"yes"], [AC_MSG_ERROR([Please install HDF5 (h5c++) before configuring])])
 
 # check for WFDB library
 AC_CHECK_PROG([WFDB_CHECK],[wfdb-config], [yes])
@@ -35,6 +39,7 @@ AC_CHECK_PROG([GIT_CHECK], [git], [yes])
 AS_IF([test x"$GIT_CHECK" != x"yes"], [AC_MSG_ERROR([Please install git client before configuring])])
 
 # Checks for libraries.
+AC_SUBST([HDF5_LIBS])
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h fenv.h float.h inttypes.h limits.h locale.h stddef.h stdint.h stdlib.h string.h unistd.h wchar.h wctype.h])
@@ -65,6 +70,7 @@ AM_CONDITIONAL(DEBUG, test x"$debug" = x"true")
 PKG_CHECK_MODULES([zlib],[zlib])
 PKG_CHECK_MODULES([matio], [matio])
 PKG_CHECK_MODULES([expat], [expat])
+PKG_CHECK_MODULES([sqlite3],[sqlite3])
 
 AC_CONFIG_FILES([Makefile
                  libtdms/Makefile

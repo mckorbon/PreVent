@@ -245,6 +245,8 @@ EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GIT_CHECK = @GIT_CHECK@
 GREP = @GREP@
+HDF5_CHECK = @HDF5_CHECK@
+HDF5_LIBS = @HDF5_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -341,6 +343,8 @@ psdir = @psdir@
 runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
+sqlite3_CFLAGS = @sqlite3_CFLAGS@
+sqlite3_LIBS = @sqlite3_LIBS@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
@@ -422,10 +426,9 @@ include_HEADERS = AnonymizingSignalSet.h \
 	ZlReader2.h \
 	ZlReader.h
 
-AM_CXXFLAGS = -I../libtdms/include @WFDB_CFLAGS@
+AM_CXXFLAGS = -shlib -I../libtdms/include @WFDB_CFLAGS@
 ACLOCAL_AMFLAGS = -I m4
-AM_LDFLAGS = -L../libtdms/.libs -ltdms @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs
-#/usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5.so /usr/lib/x86_64-linux-gnu/hdf5/serial/libhdf5_cpp.so 
+AM_LDFLAGS = -L../libtdms/.libs -ltdms @zlib_LIBS@ @matio_LIBS@ @expat_LIBS@ @WFDB_LIBS@ -lstdc++fs -lhdf5_cpp
 CLEANFILES = build.h
 GIT_VERSION = `git describe --abbrev=8 --dirty --always --tags`
 BUILT_SOURCES = build.h
