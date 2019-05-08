@@ -5,7 +5,6 @@
 FormatConverter/uva-sample-complete/
 FormatConverter/uva-sample/
 autom4te.cache/
-build-aux/
 config.h.in~
 FormatConverter/Makefile
 FormatConverter/formatconverter
